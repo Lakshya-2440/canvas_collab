@@ -92,14 +92,19 @@ function App() {
   useEffect(() => {
     const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001';
     const socket = io(socketUrl, {
-      transports: ['websocket'], // Use websocket only for lower latency
+      transports: ['websocket', 'polling'],
       reconnectionDelay: 100,
-      reconnectionDelayMax: 500
+      reconnectionDelayMax: 500,
+      timeout: 20000
     });
     socketRef.current = socket;
 
     socket.on('connect', () => {
       setIsConnected(true);
+    });
+
+    socket.on('connect_error', (err) => {
+      console.error('Socket connection error:', err.message);
     });
 
     socket.on('disconnect', () => {
