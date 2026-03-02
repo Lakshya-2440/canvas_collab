@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: canvas-collab-server
+    runtime: node
+    buildCommand: cd server && npm install && npm run build
+    startCommand: cd server && npm start
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: NODE_ENV
+        value: production
+    plan: free
